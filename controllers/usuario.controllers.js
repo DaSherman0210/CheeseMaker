@@ -1,13 +1,23 @@
+const usuario = require('../models/Usuario.js')
+
 const getUsers = (req,res)=>{
     res.json({
         "message":"Get hello from restserver with POO"
     })
 }
 
-const postUsers = (req,res)=>{
-    res.json({
-        "message":"Post hello from restserver with POO"
-    })            
+const postUsers = async (req,res)=>{
+    try {
+        const body = req.body;
+        const user = new usuario(body);
+        await user.save();
+        res.json({
+        "message":"Post hello from restserver with POO",
+        user
+    })    
+    } catch (error) {
+        console.log(error);
+    }           
 }
 
 const deleteUsers = (req,res)=>{
