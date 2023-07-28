@@ -1,6 +1,7 @@
 const {response} = require('express');
 const Usuario = require('../models/Usuario.js');
 const bcrypt = require('bcryptjs');
+const { generateJWT } = require('../helpers/generate.JWS.js');
 
 const login = async (req,res=response) => {
     try {
@@ -32,8 +33,14 @@ const login = async (req,res=response) => {
                 msg: "No concide la contraseña"
             });
         }
+
+        //? Generacion para validacion JSON WEB TOKEN
+
+        const token = await generateJWT(usuario.id);
+
         res.json({
-            msg: "OK"
+            usuario,
+            token
         });
     } catch (error) {
         console.log(error);
